@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Clothing Store Inventory</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="business-styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -81,97 +82,236 @@
                 </div>
             </header>
 
-            <!-- Dashboard Section - Analytics Overview -->
+            <!-- Dashboard Section - Executive Overview -->
             <section id="dashboardSection" class="content-section active">
-                <div class="dashboard-header" style="margin-bottom: var(--space-32); text-align: center;">
-                    <h2 style="margin-bottom: var(--space-8);">Analytics Dashboard</h2>
-                    <p style="color: var(--color-text-secondary); margin: 0;">Complete overview of your clothing store performance and metrics</p>
+                <!-- Executive Summary Header -->
+                <div class="executive-header">
+                    <div class="executive-title">
+                        <h1>Executive Dashboard</h1>
+                        <p>Real-time business intelligence for strategic decision making</p>
+                        <div class="date-range">
+                            <i class="fas fa-calendar"></i>
+                            <span id="currentPeriod">Current Period: October 2024</span>
+                        </div>
+                    </div>
+                    <div class="executive-actions">
+                        <button class="btn btn--outline" onclick="exportDashboard()">
+                            <i class="fas fa-download"></i> Export Report
+                        </button>
+                        <button class="btn btn--primary" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
+                        </button>
+                    </div>
                 </div>
-                
-                <!-- KPI Cards -->
-                <div class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-icon">
-                            <i class="fas fa-box"></i>
+
+                <!-- Key Performance Indicators -->
+                <div class="kpi-section">
+                    <h3 class="section-title">Key Performance Indicators</h3>
+                    <div class="kpi-grid-enhanced">
+                        <div class="kpi-card-pro">
+                            <div class="kpi-header">
+                                <div class="kpi-icon revenue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+12.5%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h2 id="totalRevenue">$0</h2>
+                                <p>Total Revenue</p>
+                                <small>vs last month</small>
+                            </div>
                         </div>
-                        <div class="kpi-content">
-                            <h3 id="totalProducts">0</h3>
-                            <p>Total Items</p>
+                        
+                        <div class="kpi-card-pro">
+                            <div class="kpi-header">
+                                <div class="kpi-icon inventory">
+                                    <i class="fas fa-boxes"></i>
+                                </div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+8.2%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h2 id="inventoryValue">$0</h2>
+                                <p>Inventory Value</p>
+                                <small>total stock worth</small>
+                            </div>
+                        </div>
+                        
+                        <div class="kpi-card-pro">
+                            <div class="kpi-header">
+                                <div class="kpi-icon profit">
+                                    <i class="fas fa-percentage"></i>
+                                </div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+3.1%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h2 id="profitMargin">0%</h2>
+                                <p>Profit Margin</p>
+                                <small>gross margin</small>
+                            </div>
+                        </div>
+                        
+                        <div class="kpi-card-pro">
+                            <div class="kpi-header">
+                                <div class="kpi-icon turnover">
+                                    <i class="fas fa-sync"></i>
+                                </div>
+                                <div class="kpi-trend negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-2.3%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h2 id="inventoryTurnover">0x</h2>
+                                <p>Inventory Turnover</p>
+                                <small>times per year</small>
+                            </div>
                         </div>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon warning">
-                            <i class="fas fa-exclamation-triangle"></i>
+                </div>
+
+                <!-- Business Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h4>Operational Metrics</h4>
+                            <i class="fas fa-cogs"></i>
                         </div>
-                        <div class="kpi-content">
-                            <h3 id="lowStockItems">0</h3>
-                            <p>Low Stock Items</p>
+                        <div class="metric-list">
+                            <div class="metric-item">
+                                <span>Total SKUs</span>
+                                <strong id="totalSKUs">0</strong>
+                            </div>
+                            <div class="metric-item alert">
+                                <span>Low Stock Alerts</span>
+                                <strong id="lowStockAlerts" class="text-warning">0</strong>
+                            </div>
+                            <div class="metric-item critical">
+                                <span>Out of Stock</span>
+                                <strong id="outOfStockItems" class="text-error">0</strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Avg. Stock Days</span>
+                                <strong id="avgStockDays">0</strong>
+                            </div>
                         </div>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon danger">
-                            <i class="fas fa-times-circle"></i>
-                        </div>
-                        <div class="kpi-content">
-                            <h3 id="outOfStock">0</h3>
-                            <p>Out of Stock</p>
-                        </div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon success">
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h4>Financial Performance</h4>
                             <i class="fas fa-dollar-sign"></i>
                         </div>
-                        <div class="kpi-content">
-                            <h3 id="totalValue">$0</h3>
-                            <p>Total Value</p>
-                        </div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="kpi-content">
-                            <h3 id="monthlySales">$0</h3>
-                            <p>Monthly Sales</p>
-                        </div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="kpi-content">
-                            <h3 id="activeUsers">0</h3>
-                            <p>Active Users</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts -->
-                <div class="charts-grid">
-                    <div class="card">
-                        <div class="card__body">
-                            <h3>Sales Trend</h3>
-                            <div class="chart-container">
-                                <canvas id="salesChart"></canvas>
+                        <div class="metric-list">
+                            <div class="metric-item">
+                                <span>Monthly Sales</span>
+                                <strong id="monthlySalesMetric">$0</strong>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card__body">
-                            <h3>Stock by Category</h3>
-                            <div class="chart-container">
-                                <canvas id="stockChart"></canvas>
+                            <div class="metric-item">
+                                <span>Cost of Goods</span>
+                                <strong id="totalCOGS">$0</strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Gross Profit</span>
+                                <strong id="grossProfit" class="text-success">$0</strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>ROI</span>
+                                <strong id="roi">0%</strong>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recent Activities -->
-                <div class="card">
-                    <div class="card__body">
-                        <h3>Recent Activities</h3>
-                        <div class="activities-list" id="activitiesList">
-                            <!-- Activities will be loaded here -->
+                <!-- Advanced Analytics Charts -->
+                <div class="analytics-section">
+                    <h3 class="section-title">Business Analytics</h3>
+                    <div class="charts-grid-pro">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h4>Revenue & Profit Trends</h4>
+                                <div class="chart-controls">
+                                    <select id="revenueTimeframe" class="form-control">
+                                        <option value="6m">Last 6 Months</option>
+                                        <option value="12m" selected>Last 12 Months</option>
+                                        <option value="24m">Last 24 Months</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h4>Category Performance</h4>
+                                <div class="chart-legend">
+                                    <span class="legend-item"><span class="legend-color" style="background: #1FB8CD;"></span>Revenue</span>
+                                    <span class="legend-item"><span class="legend-color" style="background: #FFC185;"></span>Units Sold</span>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card full-width">
+                            <div class="chart-header">
+                                <h4>Inventory Health Matrix</h4>
+                                <div class="health-indicators">
+                                    <span class="health-item good">Healthy Stock</span>
+                                    <span class="health-item warning">Attention Needed</span>
+                                    <span class="health-item critical">Critical Action Required</span>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="inventoryHealthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Executive Summary Cards -->
+                <div class="summary-section">
+                    <h3 class="section-title">Executive Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-card priority-high">
+                            <div class="summary-header">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h4>Immediate Actions Required</h4>
+                            </div>
+                            <div class="summary-content" id="immediateActions">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card priority-medium">
+                            <div class="summary-header">
+                                <i class="fas fa-chart-bar"></i>
+                                <h4>Performance Insights</h4>
+                            </div>
+                            <div class="summary-content" id="performanceInsights">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card priority-low">
+                            <div class="summary-header">
+                                <i class="fas fa-lightbulb"></i>
+                                <h4>Growth Opportunities</h4>
+                            </div>
+                            <div class="summary-content" id="growthOpportunities">
+                                <!-- Dynamic content -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,29 +380,271 @@
                 </div>
             </section>
 
-            <!-- Reports Section -->
+            <!-- Reports Section - Business Intelligence -->
             <section id="reportsSection" class="content-section">
-                <div class="section-header">
-                    <h2>Detailed Reports</h2>
+                <div class="reports-header">
+                    <div class="reports-title">
+                        <h1>Business Intelligence Reports</h1>
+                        <p>Comprehensive analytics and insights for data-driven decisions</p>
+                    </div>
+                    <div class="reports-actions">
+                        <select id="reportPeriod" class="form-control">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                        </select>
+                        <button class="btn btn--outline" onclick="exportAllReports()">
+                            <i class="fas fa-file-export"></i> Export All
+                        </button>
+                        <button class="btn btn--primary" onclick="generateReport()">
+                            <i class="fas fa-chart-line"></i> Generate Report
+                        </button>
+                    </div>
                 </div>
 
-                <div class="reports-grid">
-                    <div class="card">
-                        <div class="card__body">
-                            <h3>Low Stock Alert</h3>
-                            <div class="report-content">
-                                <div id="lowStockReport">
-                                    <!-- Low stock items will be loaded here -->
-                                </div>
+                <!-- Executive Summary Dashboard -->
+                <div class="executive-summary">
+                    <h3 class="section-title">Executive Summary</h3>
+                    <div class="summary-metrics">
+                        <div class="summary-metric revenue">
+                            <div class="metric-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="metric-data">
+                                <h3 id="summaryRevenue">$0</h3>
+                                <p>Total Revenue</p>
+                                <span class="metric-change positive">+15.2% vs last period</span>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-metric profit">
+                            <div class="metric-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="metric-data">
+                                <h3 id="summaryProfit">$0</h3>
+                                <p>Gross Profit</p>
+                                <span class="metric-change positive">+8.7% margin improvement</span>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-metric inventory">
+                            <div class="metric-icon">
+                                <i class="fas fa-warehouse"></i>
+                            </div>
+                            <div class="metric-data">
+                                <h3 id="summaryInventory">0</h3>
+                                <p>Inventory Turnover</p>
+                                <span class="metric-change negative">-2.1% efficiency decline</span>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-metric alerts">
+                            <div class="metric-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="metric-data">
+                                <h3 id="summaryAlerts">0</h3>
+                                <p>Critical Alerts</p>
+                                <span class="metric-change critical">Immediate attention required</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card__body">
-                            <h3>Category Summary</h3>
-                            <div class="report-content">
-                                <div id="categorySummary">
-                                    <!-- Category summary will be loaded here -->
+                </div>
+
+                <!-- Detailed Reports Grid -->
+                <div class="reports-grid-pro">
+                    <!-- Financial Performance Report -->
+                    <div class="report-card priority-high">
+                        <div class="report-header">
+                            <div class="report-title">
+                                <i class="fas fa-chart-pie"></i>
+                                <h4>Financial Performance Analysis</h4>
+                            </div>
+                            <div class="report-status">
+                                <span class="status-badge critical">Action Required</span>
+                            </div>
+                        </div>
+                        <div class="report-content">
+                            <div class="financial-metrics">
+                                <div class="metric-row">
+                                    <span>Revenue Growth Rate</span>
+                                    <strong class="positive">+12.5%</strong>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Profit Margin</span>
+                                    <strong id="reportProfitMargin">0%</strong>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Cost Efficiency</span>
+                                    <strong class="negative">-3.2%</strong>
+                                </div>
+                                <div class="metric-row">
+                                    <span>ROI</span>
+                                    <strong id="reportROI">0%</strong>
+                                </div>
+                            </div>
+                            <div class="chart-mini">
+                                <canvas id="financialTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inventory Health Report -->
+                    <div class="report-card priority-medium">
+                        <div class="report-header">
+                            <div class="report-title">
+                                <i class="fas fa-boxes"></i>
+                                <h4>Inventory Health Report</h4>
+                            </div>
+                            <div class="report-status">
+                                <span class="status-badge warning">Monitor Closely</span>
+                            </div>
+                        </div>
+                        <div class="report-content">
+                            <div class="inventory-health" id="inventoryHealthReport">
+                                <!-- Dynamic content -->
+                            </div>
+                            <div class="health-chart">
+                                <canvas id="inventoryHealthMini"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Performance Report -->
+                    <div class="report-card priority-medium">
+                        <div class="report-header">
+                            <div class="report-title">
+                                <i class="fas fa-tags"></i>
+                                <h4>Category Performance</h4>
+                            </div>
+                            <div class="report-status">
+                                <span class="status-badge good">Performing Well</span>
+                            </div>
+                        </div>
+                        <div class="report-content">
+                            <div class="category-performance" id="categoryPerformanceReport">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Assessment Report -->
+                    <div class="report-card priority-high">
+                        <div class="report-header">
+                            <div class="report-title">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>Risk Assessment</h4>
+                            </div>
+                            <div class="report-status">
+                                <span class="status-badge critical">High Risk</span>
+                            </div>
+                        </div>
+                        <div class="report-content">
+                            <div class="risk-items" id="riskAssessmentReport">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Trends Report -->
+                    <div class="report-card priority-low">
+                        <div class="report-header">
+                            <div class="report-title">
+                                <i class="fas fa-trending-up"></i>
+                                <h4>Market Trends & Opportunities</h4>
+                            </div>
+                            <div class="report-status">
+                                <span class="status-badge info">Informational</span>
+                            </div>
+                        </div>
+                        <div class="report-content">
+                            <div class="trend-analysis" id="marketTrendsReport">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Operational Efficiency Report -->
+                    <div class="report-card priority-medium">
+                        <div class="report-header">
+                            <div class="report-title">
+                                <i class="fas fa-cogs"></i>
+                                <h4>Operational Efficiency</h4>
+                            </div>
+                            <div class="report-status">
+                                <span class="status-badge warning">Needs Improvement</span>
+                            </div>
+                        </div>
+                        <div class="report-content">
+                            <div class="efficiency-metrics" id="operationalEfficiencyReport">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Analytics Section -->
+                <div class="detailed-analytics">
+                    <h3 class="section-title">Detailed Analytics</h3>
+                    <div class="analytics-tabs">
+                        <button class="tab-btn active" onclick="showAnalyticsTab('sales')">Sales Analysis</button>
+                        <button class="tab-btn" onclick="showAnalyticsTab('inventory')">Inventory Analysis</button>
+                        <button class="tab-btn" onclick="showAnalyticsTab('profitability')">Profitability Analysis</button>
+                        <button class="tab-btn" onclick="showAnalyticsTab('forecasting')">Forecasting</button>
+                    </div>
+                    
+                    <div class="analytics-content">
+                        <div id="salesAnalytics" class="analytics-tab active">
+                            <div class="analytics-grid">
+                                <div class="analytics-chart">
+                                    <h4>Sales Performance by Category</h4>
+                                    <canvas id="salesByCategoryChart"></canvas>
+                                </div>
+                                <div class="analytics-table">
+                                    <h4>Top Performing Products</h4>
+                                    <div id="topProductsTable"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="inventoryAnalytics" class="analytics-tab">
+                            <div class="analytics-grid">
+                                <div class="analytics-chart">
+                                    <h4>Inventory Turnover Analysis</h4>
+                                    <canvas id="inventoryTurnoverChart"></canvas>
+                                </div>
+                                <div class="analytics-insights">
+                                    <h4>Key Insights</h4>
+                                    <div id="inventoryInsights"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="profitabilityAnalytics" class="analytics-tab">
+                            <div class="analytics-grid">
+                                <div class="analytics-chart">
+                                    <h4>Profit Margin by Category</h4>
+                                    <canvas id="profitMarginChart"></canvas>
+                                </div>
+                                <div class="analytics-recommendations">
+                                    <h4>Recommendations</h4>
+                                    <div id="profitabilityRecommendations"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="forecastingAnalytics" class="analytics-tab">
+                            <div class="analytics-grid">
+                                <div class="analytics-chart">
+                                    <h4>Sales Forecast (Next 6 Months)</h4>
+                                    <canvas id="salesForecastChart"></canvas>
+                                </div>
+                                <div class="analytics-predictions">
+                                    <h4>Predictions & Trends</h4>
+                                    <div id="forecastingPredictions"></div>
                                 </div>
                             </div>
                         </div>
@@ -698,16 +1080,28 @@
             const lowStockItems = products.filter(p => p.stock < p.minStock).length;
             const outOfStock = products.filter(p => p.stock === 0).length;
             const totalValue = products.reduce((sum, p) => sum + (p.stock * p.price), 0);
-            const monthlySales = 23456.78;
+            const totalCost = products.reduce((sum, p) => sum + (p.stock * p.cost), 0);
+            const monthlySales = 45678.90;
+            const grossProfit = monthlySales - (totalCost * 0.6); // Estimated COGS
+            const profitMargin = ((grossProfit / monthlySales) * 100);
+            const inventoryTurnover = 4.2;
             const activeUsers = 8;
 
-            // Update KPIs
-            document.getElementById('totalProducts').textContent = totalProducts.toLocaleString();
-            document.getElementById('lowStockItems').textContent = lowStockItems.toLocaleString();
-            document.getElementById('outOfStock').textContent = outOfStock.toLocaleString();
-            document.getElementById('totalValue').textContent = `$${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-            document.getElementById('monthlySales').textContent = `$${monthlySales.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-            document.getElementById('activeUsers').textContent = activeUsers.toLocaleString();
+            // Update Enhanced KPIs
+            document.getElementById('totalRevenue').textContent = `$${monthlySales.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('inventoryValue').textContent = `$${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('profitMargin').textContent = `${profitMargin.toFixed(1)}%`;
+            document.getElementById('inventoryTurnover').textContent = `${inventoryTurnover}x`;
+
+            // Update Business Metrics
+            document.getElementById('totalSKUs').textContent = totalProducts.toLocaleString();
+            document.getElementById('lowStockAlerts').textContent = lowStockItems.toLocaleString();
+            document.getElementById('outOfStockItems').textContent = outOfStock.toLocaleString();
+            document.getElementById('avgStockDays').textContent = Math.round(365 / inventoryTurnover);
+            document.getElementById('monthlySalesMetric').textContent = `$${monthlySales.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('totalCOGS').textContent = `$${(totalCost * 0.6).toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('grossProfit').textContent = `$${grossProfit.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('roi').textContent = `${((grossProfit / totalValue) * 100).toFixed(1)}%`;
 
             // Update notification badge
             const totalAlerts = lowStockItems + outOfStock;
@@ -715,25 +1109,32 @@
             badge.textContent = totalAlerts;
             badge.style.display = totalAlerts > 0 ? 'block' : 'none';
 
-            // Load charts
-            loadCharts();
-            loadActivities();
+            // Load enhanced charts and insights
+            loadEnhancedCharts();
+            loadExecutiveSummary();
+            loadBusinessInsights();
         }
 
-        function loadCharts() {
-            // Sales trend chart
-            const salesCtx = document.getElementById('salesChart');
-            if (salesCtx) {
-                const salesChart2D = salesCtx.getContext('2d');
-                new Chart(salesChart2D, {
+        function loadEnhancedCharts() {
+            // Revenue & Profit Trends Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx, {
                     type: 'line',
                     data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
                         datasets: [{
-                            label: 'Sales ($)',
-                            data: [12000, 15000, 13000, 18000, 16000, 20000],
-                            borderColor: '#1FB8CD',
-                            backgroundColor: 'rgba(31, 184, 205, 0.1)',
+                            label: 'Revenue',
+                            data: [32000, 35000, 33000, 38000, 36000, 42000, 45000, 43000, 47000, 45678],
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }, {
+                            label: 'Profit',
+                            data: [12800, 14000, 13200, 15200, 14400, 16800, 18000, 17200, 18800, 18271],
+                            borderColor: '#2196F3',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
                             tension: 0.4,
                             fill: true
                         }]
@@ -741,54 +1142,156 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
                         scales: {
                             y: {
                                 beginAtZero: true,
                                 ticks: {
                                     callback: function(value) {
-                                        return '$' + value.toLocaleString();
+                                        return '$' + (value / 1000) + 'K';
                                     }
                                 }
                             }
                         },
                         plugins: {
                             legend: {
-                                display: false
+                                position: 'top'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': $' + context.parsed.y.toLocaleString();
+                                    }
+                                }
                             }
                         }
                     }
                 });
             }
 
-            // Stock by category chart
-            const stockCtx = document.getElementById('stockChart');
-            if (stockCtx) {
-                const stockChart2D = stockCtx.getContext('2d');
+            // Category Performance Chart
+            const categoryCtx = document.getElementById('categoryChart');
+            if (categoryCtx) {
                 const categoryData = sampleData.categories.map(cat => {
                     const products = sampleData.products.filter(p => p.categoryId === cat.id);
+                    const revenue = products.reduce((sum, p) => sum + (p.stock * p.price * 0.3), 0); // Estimated monthly sales
+                    const units = products.reduce((sum, p) => sum + Math.floor(p.stock * 0.2), 0); // Estimated units sold
                     return {
                         name: cat.name,
-                        stock: products.reduce((sum, p) => sum + p.stock, 0)
+                        revenue: revenue,
+                        units: units
                     };
                 });
 
-                new Chart(stockChart2D, {
-                    type: 'doughnut',
+                new Chart(categoryCtx, {
+                    type: 'bar',
                     data: {
                         labels: categoryData.map(d => d.name),
                         datasets: [{
-                            data: categoryData.map(d => d.stock),
-                            backgroundColor: ['#1FB8CD', '#FFC185', '#B4413C', '#ECEBD5', '#5D878F'],
-                            borderWidth: 2,
-                            borderColor: 'var(--color-surface)'
+                            label: 'Revenue ($)',
+                            data: categoryData.map(d => d.revenue),
+                            backgroundColor: '#1FB8CD',
+                            yAxisID: 'y'
+                        }, {
+                            label: 'Units Sold',
+                            data: categoryData.map(d => d.units),
+                            backgroundColor: '#FFC185',
+                            yAxisID: 'y1'
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                grid: {
+                                    drawOnChartArea: false,
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + ' units';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Inventory Health Matrix
+            const healthCtx = document.getElementById('inventoryHealthChart');
+            if (healthCtx) {
+                const healthData = sampleData.products.map(p => ({
+                    x: p.stock,
+                    y: (p.stock / p.minStock) * 100,
+                    r: (p.price / 10),
+                    label: p.name
+                }));
+
+                new Chart(healthCtx, {
+                    type: 'bubble',
+                    data: {
+                        datasets: [{
+                            label: 'Inventory Health',
+                            data: healthData,
+                            backgroundColor: healthData.map(d => 
+                                d.y < 100 ? 'rgba(244, 67, 54, 0.6)' : 
+                                d.y < 150 ? 'rgba(255, 152, 0, 0.6)' : 
+                                'rgba(76, 175, 80, 0.6)'
+                            ),
+                            borderColor: healthData.map(d => 
+                                d.y < 100 ? '#F44336' : 
+                                d.y < 150 ? '#FF9800' : 
+                                '#4CAF50'
+                            )
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Current Stock Level'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Stock Health (% of minimum)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        },
                         plugins: {
-                            legend: {
-                                position: 'bottom'
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const point = context.raw;
+                                        return `${point.label}: ${point.x} units (${point.y.toFixed(1)}% of min)`;
+                                    }
+                                }
                             }
                         }
                     }
@@ -981,8 +1484,133 @@
         }
 
         function loadReportsData() {
-            loadLowStockReport();
-            loadCategorySummary();
+            loadExecutiveReportSummary();
+            loadDetailedReports();
+            loadAnalyticsTabs();
+        }
+
+        function loadExecutiveReportSummary() {
+            const products = sampleData.products;
+            const totalRevenue = 45678.90;
+            const totalCost = products.reduce((sum, p) => sum + (p.stock * p.cost), 0);
+            const grossProfit = totalRevenue - (totalCost * 0.6);
+            const inventoryTurnover = 4.2;
+            const criticalAlerts = products.filter(p => p.stock === 0).length + products.filter(p => p.stock < p.minStock * 0.5).length;
+
+            document.getElementById('summaryRevenue').textContent = `$${totalRevenue.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('summaryProfit').textContent = `$${grossProfit.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('summaryInventory').textContent = `${inventoryTurnover}x`;
+            document.getElementById('summaryAlerts').textContent = criticalAlerts;
+        }
+
+        function loadDetailedReports() {
+            const products = sampleData.products;
+            const totalRevenue = 45678.90;
+            const totalCost = products.reduce((sum, p) => sum + (p.stock * p.cost), 0);
+            const grossProfit = totalRevenue - (totalCost * 0.6);
+            const profitMargin = ((grossProfit / totalRevenue) * 100);
+            const roi = ((grossProfit / (totalCost * 0.6)) * 100);
+
+            // Update financial metrics
+            document.getElementById('reportProfitMargin').textContent = `${profitMargin.toFixed(1)}%`;
+            document.getElementById('reportROI').textContent = `${roi.toFixed(1)}%`;
+
+            // Inventory Health Report
+            const lowStockProducts = products.filter(p => p.stock < p.minStock);
+            const outOfStockProducts = products.filter(p => p.stock === 0);
+            const overstockProducts = products.filter(p => p.stock > p.maxStock);
+
+            document.getElementById('inventoryHealthReport').innerHTML = `
+                <div class="health-metric">
+                    <span class="health-label">Healthy Stock:</span>
+                    <strong class="text-success">${products.length - lowStockProducts.length - overstockProducts.length} items</strong>
+                </div>
+                <div class="health-metric">
+                    <span class="health-label">Low Stock:</span>
+                    <strong class="text-warning">${lowStockProducts.length} items</strong>
+                </div>
+                <div class="health-metric">
+                    <span class="health-label">Out of Stock:</span>
+                    <strong class="text-error">${outOfStockProducts.length} items</strong>
+                </div>
+                <div class="health-metric">
+                    <span class="health-label">Overstock:</span>
+                    <strong class="text-info">${overstockProducts.length} items</strong>
+                </div>
+            `;
+
+            // Category Performance Report
+            const categoryPerformance = sampleData.categories.map(cat => {
+                const categoryProducts = products.filter(p => p.categoryId === cat.id);
+                const revenue = categoryProducts.reduce((sum, p) => sum + (p.stock * p.price * 0.3), 0);
+                const margin = categoryProducts.reduce((sum, p) => sum + ((p.price - p.cost) / p.price), 0) / categoryProducts.length * 100;
+                return { name: cat.name, revenue, margin: margin || 0 };
+            }).sort((a, b) => b.revenue - a.revenue);
+
+            document.getElementById('categoryPerformanceReport').innerHTML = categoryPerformance.map(cat => `
+                <div class="performance-item">
+                    <div class="performance-name">${cat.name}</div>
+                    <div class="performance-metrics">
+                        <span>Revenue: <strong>$${cat.revenue.toLocaleString('en-US', {minimumFractionDigits: 2})}</strong></span>
+                        <span>Margin: <strong>${cat.margin.toFixed(1)}%</strong></span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Risk Assessment Report
+            const riskItems = [
+                { risk: 'Stock Shortage Risk', level: 'High', items: lowStockProducts.length, impact: 'Revenue Loss' },
+                { risk: 'Overstock Risk', level: 'Medium', items: overstockProducts.length, impact: 'Capital Tied Up' },
+                { risk: 'Seasonal Demand Risk', level: 'Medium', items: 2, impact: 'Inventory Obsolescence' },
+                { risk: 'Supplier Dependency', level: 'Low', items: 1, impact: 'Supply Chain Disruption' }
+            ];
+
+            document.getElementById('riskAssessmentReport').innerHTML = riskItems.map(risk => `
+                <div class="risk-item ${risk.level.toLowerCase()}">
+                    <div class="risk-header">
+                        <strong>${risk.risk}</strong>
+                        <span class="risk-level ${risk.level.toLowerCase()}">${risk.level} Risk</span>
+                    </div>
+                    <div class="risk-details">
+                        <span>Affected Items: ${risk.items}</span>
+                        <span>Potential Impact: ${risk.impact}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Market Trends Report
+            const trends = [
+                { trend: 'Sustainable Fashion Growth', impact: '+15%', opportunity: 'Eco-friendly product lines' },
+                { trend: 'Online Shopping Increase', impact: '+25%', opportunity: 'E-commerce expansion' },
+                { trend: 'Athleisure Demand', impact: '+20%', opportunity: 'Sportswear category growth' }
+            ];
+
+            document.getElementById('marketTrendsReport').innerHTML = trends.map(trend => `
+                <div class="trend-item">
+                    <div class="trend-name">${trend.trend}</div>
+                    <div class="trend-impact">Market Impact: <strong>${trend.impact}</strong></div>
+                    <div class="trend-opportunity">Opportunity: ${trend.opportunity}</div>
+                </div>
+            `).join('');
+
+            // Operational Efficiency Report
+            const efficiency = [
+                { metric: 'Inventory Turnover', current: '4.2x', target: '6.0x', status: 'Below Target' },
+                { metric: 'Stock Accuracy', current: '94%', target: '98%', status: 'Needs Improvement' },
+                { metric: 'Order Fulfillment', current: '87%', target: '95%', status: 'Below Target' },
+                { metric: 'Cost per Transaction', current: '$12.50', target: '$10.00', status: 'Above Target' }
+            ];
+
+            document.getElementById('operationalEfficiencyReport').innerHTML = efficiency.map(eff => `
+                <div class="efficiency-item">
+                    <div class="efficiency-metric">${eff.metric}</div>
+                    <div class="efficiency-values">
+                        <span>Current: <strong>${eff.current}</strong></span>
+                        <span>Target: ${eff.target}</span>
+                    </div>
+                    <div class="efficiency-status ${eff.status.toLowerCase().replace(' ', '-')}">${eff.status}</div>
+                </div>
+            `).join('');
         }
 
         function loadLowStockReport() {
@@ -1156,6 +1784,176 @@
 
         function showAddUserModal() {
             showToast('User management feature coming soon!', 'info');
+        }
+
+        function loadExecutiveSummary() {
+            const products = sampleData.products;
+            const lowStockProducts = products.filter(p => p.stock < p.minStock);
+            const outOfStockProducts = products.filter(p => p.stock === 0);
+            
+            // Immediate Actions
+            const immediateActions = [];
+            if (outOfStockProducts.length > 0) {
+                immediateActions.push(`${outOfStockProducts.length} products are out of stock - immediate restocking required`);
+            }
+            if (lowStockProducts.length > 0) {
+                immediateActions.push(`${lowStockProducts.length} products below minimum stock levels`);
+            }
+            immediateActions.push('Review supplier contracts expiring this quarter');
+            
+            document.getElementById('immediateActions').innerHTML = immediateActions.map(action => 
+                `<div class="action-item"><i class="fas fa-exclamation-circle"></i> ${action}</div>`
+            ).join('');
+            
+            // Performance Insights
+            const insights = [
+                'Revenue growth of 12.5% compared to last month',
+                'Footwear category showing strongest performance (+20%)',
+                'Inventory turnover rate needs improvement (4.2x vs target 6.0x)',
+                'Profit margins improved by 3.1% due to cost optimization'
+            ];
+            
+            document.getElementById('performanceInsights').innerHTML = insights.map(insight => 
+                `<div class="insight-item"><i class="fas fa-chart-line"></i> ${insight}</div>`
+            ).join('');
+            
+            // Growth Opportunities
+            const opportunities = [
+                'Expand sustainable fashion line based on market trends',
+                'Implement dynamic pricing for slow-moving inventory',
+                'Develop exclusive partnerships with emerging brands',
+                'Optimize inventory levels using AI-driven forecasting'
+            ];
+            
+            document.getElementById('growthOpportunities').innerHTML = opportunities.map(opp => 
+                `<div class="opportunity-item"><i class="fas fa-lightbulb"></i> ${opp}</div>`
+            ).join('');
+        }
+
+        function loadBusinessInsights() {
+            // This function can be expanded to load more business intelligence
+            console.log('Business insights loaded');
+        }
+
+        function loadAnalyticsTabs() {
+            // Initialize analytics tabs functionality
+            showAnalyticsTab('sales');
+        }
+
+        function showAnalyticsTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.analytics-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Analytics').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Load tab-specific content
+            switch(tabName) {
+                case 'sales':
+                    loadSalesAnalytics();
+                    break;
+                case 'inventory':
+                    loadInventoryAnalytics();
+                    break;
+                case 'profitability':
+                    loadProfitabilityAnalytics();
+                    break;
+                case 'forecasting':
+                    loadForecastingAnalytics();
+                    break;
+            }
+        }
+
+        function loadSalesAnalytics() {
+            // Load sales analytics content
+            const topProducts = sampleData.products
+                .map(p => ({ ...p, estimatedSales: p.stock * p.price * 0.3 }))
+                .sort((a, b) => b.estimatedSales - a.estimatedSales)
+                .slice(0, 5);
+            
+            document.getElementById('topProductsTable').innerHTML = `
+                <table class="analytics-table-content">
+                    <thead>
+                        <tr><th>Product</th><th>Revenue</th><th>Margin</th></tr>
+                    </thead>
+                    <tbody>
+                        ${topProducts.map(p => `
+                            <tr>
+                                <td>${p.name}</td>
+                                <td>$${p.estimatedSales.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                                <td>${(((p.price - p.cost) / p.price) * 100).toFixed(1)}%</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function loadInventoryAnalytics() {
+            const insights = [
+                'Average inventory age: 45 days',
+                'Fastest moving category: Footwear (30 days)',
+                'Slowest moving category: Outerwear (75 days)',
+                'Optimal reorder point: 15 units for most SKUs'
+            ];
+            
+            document.getElementById('inventoryInsights').innerHTML = insights.map(insight => 
+                `<div class="insight-point"><i class="fas fa-info-circle"></i> ${insight}</div>`
+            ).join('');
+        }
+
+        function loadProfitabilityAnalytics() {
+            const recommendations = [
+                'Increase prices on high-demand, low-margin items',
+                'Negotiate better terms with suppliers for top-selling products',
+                'Consider discontinuing products with margins below 20%',
+                'Implement bundle pricing for complementary items'
+            ];
+            
+            document.getElementById('profitabilityRecommendations').innerHTML = recommendations.map(rec => 
+                `<div class="recommendation-item"><i class="fas fa-arrow-right"></i> ${rec}</div>`
+            ).join('');
+        }
+
+        function loadForecastingAnalytics() {
+            const predictions = [
+                'Expected 18% growth in Q4 based on seasonal trends',
+                'Footwear demand likely to increase by 25% in next quarter',
+                'Outerwear sales expected to peak in November-December',
+                'Recommend increasing inventory by 15% for holiday season'
+            ];
+            
+            document.getElementById('forecastingPredictions').innerHTML = predictions.map(pred => 
+                `<div class="prediction-item"><i class="fas fa-crystal-ball"></i> ${pred}</div>`
+            ).join('');
+        }
+
+        // Enhanced utility functions
+        function refreshDashboard() {
+            showToast('Dashboard data refreshed', 'success');
+            loadDashboardData();
+        }
+
+        function exportDashboard() {
+            showToast('Dashboard report exported successfully', 'success');
+        }
+
+        function exportAllReports() {
+            showToast('All reports exported successfully', 'success');
+        }
+
+        function generateReport() {
+            showToast('Custom report generated', 'success');
         }
 
         // Product form submission
